@@ -13,16 +13,18 @@ from resources.store import Store, StoreList
 
 from db import db
 
+def get_db_url():
+    db_url = os.getenv('DATABASE_URL', 'sqlite:///data.db')
+
+    if db_url.startswith('postgres://'):
+        db_url.replace('postgres://', 'postgresql://', 1)
+
+    return db_url
+
+
 app = Flask(__name__)
 
-db_url = os.getenv('DATABASE_URL', 'sqlite:///data.db')
-
-if db_url.startswith('postgres://'):
-    db_url.replace('postgres://', 'postgresql://', 1)
-
-sys.stdout.write(db_url)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+app.config['SQLALCHEMY_DATABASE_URI'] = get_db_url()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.secret_key = 'Jose'
