@@ -3,7 +3,7 @@ import sys
 from app import app
 from db import db
 
-sys.stdout.write(get_db_url())
+sys.stdout.write(app.config['SQLALCHEMY_DATABASE_URI'])
 
 db.init_app(app)
 
