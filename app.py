@@ -14,8 +14,12 @@ from db import db
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
-    'DATABASE_URL', 'sqlite:///data.db')
+db_url = os.getenv('DATABASE_URL', 'sqlite:///data.db')
+
+if db_url.startswith('postgres:'):
+    db_url.replace('postgres:', 'postgresql:')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.secret_key = 'Jose'
